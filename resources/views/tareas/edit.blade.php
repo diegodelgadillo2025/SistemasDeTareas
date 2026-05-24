@@ -3,35 +3,53 @@
 @section('title', 'Editar Tarea')
 
 @section('content')
-    <h1>Editar tarea</h1>
 
-    @if ($errors->any())
-        <ul class="errors">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    @endif
+<div class="form-header">
+    <div>
+        <h1>Editar tarea</h1>
+        <p>Actualiza la información de tu actividad.</p>
+    </div>
 
-    <form action="{{ route('tareas.update', $tarea) }}" method="POST">
-        @csrf
-        @method('PUT')
+    <a class="btn btn-secondary" href="{{ route('tareas.index') }}">
+        Volver
+    </a>
+</div>
 
-        <label>Título:</label>
-        <input type="text" name="titulo" value="{{ old('titulo', $tarea->titulo) }}">
+@if ($errors->any())
+    <ul class="errors">
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+@endif
 
-        <label>Descripción:</label>
-        <textarea name="descripcion">{{ old('descripcion', $tarea->descripcion) }}</textarea>
+<form class="task-form" action="{{ route('tareas.update', $tarea) }}" method="POST">
+    @csrf
+    @method('PUT')
 
-        <label class="checkbox">
-            <input type="checkbox" name="completada" value="1" {{ $tarea->completada ? 'checked' : '' }}>
-            Marcar como completada
-        </label>
+    <label>Título</label>
+    <input
+        type="text"
+        name="titulo"
+        value="{{ old('titulo', $tarea->titulo) }}"
+    >
 
-        <button class="btn btn-primary" type="submit">Actualizar tarea</button>
-    </form>
+    <label>Descripción</label>
+    <textarea name="descripcion">{{ old('descripcion', $tarea->descripcion) }}</textarea>
 
-    <br>
+    <label class="checkbox">
+        <input
+            type="checkbox"
+            name="completada"
+            value="1"
+            {{ $tarea->completada ? 'checked' : '' }}
+        >
+        Marcar como completada
+    </label>
 
-    <a class="btn btn-secondary" href="{{ route('tareas.index') }}">Volver</a>
+    <button class="btn btn-primary" type="submit">
+        Actualizar tarea
+    </button>
+</form>
+
 @endsection

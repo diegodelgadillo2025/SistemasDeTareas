@@ -9,10 +9,31 @@
             <p>Organiza tus actividades y controla tus pendientes.</p>
         </div>
 
-        <a class="btn btn-primary" href="{{ route('tareas.create') }}">
+         <a class="btn btn-primary" href="{{ route('tareas.create') }}">
             + Nueva tarea
         </a>
     </div>
+    
+    <form class="search-form" action="{{ route('tareas.index') }}" method="GET">
+            <input
+                type="text"
+                name="buscar"
+                placeholder="Buscar tarea por título..."
+                value="{{ request('buscar') }}"
+            >
+
+            <button class="btn btn-primary" type="submit">
+                Buscar
+            </button>
+
+            <a class="btn btn-secondary" href="{{ route('tareas.index') }}">
+                Limpiar
+            </a>
+     </form>
+        
+
+       
+   
 
     @if(session('success'))
         <p class="success">{{ session('success') }}</p>

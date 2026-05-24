@@ -14,6 +14,9 @@ class TareaController extends Controller
 {
     $query = Tarea::where('user_id', auth()->id());
 
+    if ($request->filled('buscar')) {
+    $query->where('titulo', 'like', '%' . $request->buscar . '%');
+}
     if ($request->estado === 'pendientes') {
         $query->where('completada', false);
     }
@@ -61,15 +64,18 @@ class TareaController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Tarea $tarea)
-    {
-         return view('tareas.edit', compact('tarea'));
-    }
+{
+    abort_if($tarea->user_id !== auth()->id(), 403);
+
+    return view('tareas.edit', compact('tarea'));
+}
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Tarea $tarea)
     {
+        abort_if($tarea->user_id !== auth()->id(), 403);
          $request->validate([
             'titulo' => 'required|string|max:100',
             'descripcion' => 'nullable|string|max:500',
@@ -91,6 +97,7 @@ class TareaController extends Controller
      */
     public function destroy(Tarea $tarea)
     {
+         abort_if($tarea->user_id !== auth()->id(), 403);
         $tarea->delete();
 
         return redirect()->route('tareas.index')->with('success', 'Tarea eliminada correctamente.');
@@ -98,6 +105,7 @@ class TareaController extends Controller
 
     public function completar(Tarea $tarea)
     {
+         abort_if($tarea->user_id !== auth()->id(), 403);
         $tarea->update([
             'completada' => true,
         ]);
